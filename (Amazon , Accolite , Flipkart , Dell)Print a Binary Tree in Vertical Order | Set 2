@@ -1,0 +1,77 @@
+//Time complexity : O(n)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *left,*right;
+};
+
+struct node *newNode(int data)
+{
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    t->data = data;
+    t->left = t->right = NULL;
+    return t;
+}
+
+void inorder(node *a)
+{
+    if(a->left)
+    inorder(a->left);
+    
+    printf("%d ",a->data);
+    
+    if(a->right)
+    inorder(a->right);
+}
+void getVertical(node *node,map<int , vector<int>>& mp,int hd)
+{
+    if(!node) return;
+    
+    //insert data into map 
+    mp[hd].push_back(node->data);
+    
+    if(node->left)
+    getVertical(node->left,mp,hd-1);
+    if(node->right)
+    getVertical(node->right,mp,hd+1);
+    
+}
+void printVertical(node *root)
+{
+    if(!root) return;
+    
+    map<int , vector<int>> mp;
+    int hd = 0;
+    
+    getVertical(root,mp,hd);
+    
+    map<int , vector<int>>::iterator it;
+    for(it = mp.begin(); it!=mp.end(); it++)
+    {
+        for(int i=0; i<it->second.size(); i++)
+        printf("%d ",it->second[i]);
+        printf("\n");
+    }
+}
+
+int main()
+{
+    node *root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+    root->right->left = newNode(6); 
+    root->right->right = newNode(7); 
+    root->right->left->right = newNode(8); 
+    root->right->right->right = newNode(9); 
+    
+  //  inorder(root);
+    printVertical(root);
+
+    return 0;
+}
