@@ -1,0 +1,40 @@
+//Time complexity : O(n^2 logn)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool findPairs(int a[],int n)
+{
+    map<int , pair<int,int>> mp;
+    
+    for(int i=0;i<n;i++)
+    {
+        for(int j=i+1;j<n;j++)
+        {
+            int sum = a[i]+a[j];
+            
+            if(mp.find(sum) == mp.end())
+            mp[sum] = make_pair(i,j); 
+            
+            else
+            {
+                //if value is present 
+                pair<int , int> p = mp[sum];
+                printf("(%d, %d) (%d, %d) ",a[p.first],a[p.second],a[i],a[j]);
+                return 1;
+            }
+        }
+    }
+    printf("No pairs");
+    return 0;
+}
+
+int main()
+{
+    int arr[] = {3, 4, 7, 1, 2, 9, 8}; 
+    int n  =  sizeof arr / sizeof arr[0]; 
+    findPairs(arr, n); 
+    
+
+    return 0;
+}
