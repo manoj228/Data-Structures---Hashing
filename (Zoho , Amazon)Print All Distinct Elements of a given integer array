@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void findMissing(int a[],int n)
+void findDistinct(int a[],int n)
 {
     unordered_set<int> s;
     
@@ -21,7 +21,7 @@ int main()
     int a[] = {10, 5, 3, 4, 3, 5, 6}; 
     int n = sizeof(a)/sizeof(a[0]);
     
-    findMissing(a,n);
+    findDistinct(a,n);
     
     return 0;
 }
