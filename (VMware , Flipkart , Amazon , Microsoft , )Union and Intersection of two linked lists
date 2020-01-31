@@ -1,0 +1,108 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+struct node *push(struct node **a,int data)
+{
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    t -> data = data;
+    t -> link = (*a);
+    (*a) = t;
+    return t;
+}
+
+void printList(struct node *a)
+{
+    while(a)
+    {
+        printf("%d ",a->data);
+        a = a->link;
+    }
+    printf("\n");
+}
+
+void store(node *a,node *b,unordered_map<int , int> &mp)
+{
+    struct node *p = a , *q = b ;
+    
+    while(p != NULL || q != NULL)
+    {
+        if(p)
+        {
+            mp[p->data]++;
+            p = p->link;
+        }
+        if(q)
+        {
+            mp[q->data]++;
+            q = q->link;
+        }
+    }
+}
+
+struct node *getUnion(unordered_map<int , int> mp)
+{
+    struct node *res = NULL;
+    
+    for(auto it = mp.begin() ; it!=mp.end() ; it++)
+    push(&res,it->first);
+    
+    return res;
+}
+
+struct node *getIntersect(unordered_map<int , int> mp)
+{
+    struct node *res = NULL ;
+    
+    for(auto it = mp.begin() ; it!=mp.end() ; it++)
+    if(it->second == 2)
+    push(&res , it->first);
+    
+    return res;
+}
+void unionIntersect(struct node *a,struct node *b)
+{
+    unordered_map<int,int> mp;
+    //store element and its occurance
+    store(a,b,mp);
+    
+    struct node *u = getUnion(mp);
+    struct node *intersect = getIntersect(mp);
+    
+    printList(u);
+    printList(intersect);
+    
+}
+
+int main()
+{
+    struct node* head1 = NULL; 
+    struct node* head2 = NULL; 
+  
+    push(&head1, 1); 
+    push(&head1, 2); 
+    push(&head1, 3); 
+    push(&head1, 4); 
+    push(&head1, 5); 
+  
+    push(&head2, 1); 
+    push(&head2, 3); 
+    push(&head2, 5); 
+    push(&head2, 6); 
+  
+    printf("First list is \n"); 
+    printList(head1); 
+  
+    printf("\nSecond list is \n"); 
+    printList(head2); 
+
+    unionIntersect(head1,head2);
+
+    return 0;
+}
