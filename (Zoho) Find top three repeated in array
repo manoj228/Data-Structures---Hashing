@@ -1,0 +1,54 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void top3Repeated(int a[],int n)
+{
+    unordered_map<int,int> mp;
+    
+    //count frequency
+    for(int i=0;i<n;i++)
+    mp[a[i]]++;
+    
+    pair<int , int> x,y,z;
+    //first - frequency 
+    //second - element
+    x.first = y.first = z.first = INT_MIN;
+    
+    for(auto cur : mp)
+    {
+        if(cur.second > x.first)
+        {
+            //update second and third 
+            z = y ;
+            y = x;
+            
+            x.first = cur.second;
+            x.second = cur.first;
+        }
+        else if(cur.second > y.first)
+        {
+            //update third 
+            z = y;
+            
+            y.first = cur.second;
+            y.second = cur.first;
+        }
+        else if(cur.second > z.first)
+        {
+            z.first = cur.second;
+            z.second = cur.first;
+        }
+    }
+    
+    printf("%d %d %d",x.second,y.second,z.second);
+    
+}
+int main()
+{
+     int arr[] = { 3, 4, 2, 3, 16, 3, 15,16, 15, 15, 16, 2, 3 }; 
+    int n = sizeof(arr) / sizeof(arr[0]); 
+    top3Repeated(arr, n); 
+
+    return 0;
+}
