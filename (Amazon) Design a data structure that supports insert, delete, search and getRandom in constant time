@@ -1,0 +1,74 @@
+//Time complexity : O(1)
+#include <bits/stdc++.h>
+using namespace std;
+
+class ds 
+{
+    //array of extendable
+    vector<int> a;
+    
+    //hash map to store array and its index 
+    map<int , int> mp;
+    
+    public:
+    void add(int x)
+    {
+        //check if value found return nothing 
+        if(mp.find(x)!=mp.end())
+        return;
+        
+        int index = a.size();
+        //insert into vector array
+        a.push_back(x);
+        
+        mp.insert(std::pair<int,int>(x,index));
+    }
+    
+    void erase(int x)
+    {
+        //if element not found 
+        if(mp.find(x)==mp.end())
+        return;
+        
+        int index = mp.at(x);
+        //remove element at map 
+        mp.erase(x);
+        
+        //swap the last element in array and remove last element
+        int last = a.size()-1;
+        swap(a[index],a[last]);
+        a.pop_back();
+        
+        //update hash map
+        mp.at(a[index]) = index;
+    }
+    
+    //return index if element found , otherwise return -1 
+    int search(int x)
+    {
+        //if element found
+        if(mp.find(x) != mp.end())
+        return mp.at(x); 
+        //else
+        return -1;
+    }
+    
+    int getRandom()
+    {
+        srand(time(NULL));
+        int random_index = rand() % a.size();
+        return a.at(random_index);
+    }
+    
+};
+int main()
+{
+  ds d;
+  d.add(10);
+  d.add(20);
+  d.add(30);
+  d.add(40);
+  printf("%d ",d.search(30));
+  printf("%d ",d.getRandom());
+    return 0;
+}
