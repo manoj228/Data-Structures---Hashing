@@ -1,0 +1,84 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *left,*right,*random;
+};
+
+struct node *newnode(int data)
+{
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    t->data = data;
+    t->random = t->left = t->right = NULL;
+    return (t);
+}
+
+void inorder(struct node *t)
+{
+    if(!t)
+    return;
+    
+    inorder(t->left);
+    
+     printf("[%d ",t->data);
+     if(t->random == NULL) printf("NULL], ");
+     else
+     printf("%d], ",t->random->data);
+      
+    inorder(t->right);
+}
+
+struct node *copyLeftToRight(struct node *tree , unordered_map<node *,node *> &map)
+{
+    if(!tree) return NULL;
+    struct node *clone = newnode(tree->data);
+    map[tree] = clone;
+    clone -> left = copyLeftToRight(tree -> left , map);
+    clone -> right = copyLeftToRight(tree -> right , map);
+    return clone;
+}
+
+void copyRandom(struct node *tree, struct node *clone, unordered_map<node *,node *> &map)
+{
+    if(!clone) return ;
+    
+    clone -> random = map[tree -> random]; 
+    copyRandom(tree->left, clone->left , map);
+    copyRandom(tree->right, clone->right, map);
+}
+
+struct node *cloneTree(struct node *tree)
+{
+    if(!tree) return NULL;
+    
+    unordered_map<node *, node *> map;
+    node *newTree = copyLeftToRight(tree,map);
+    copyRandom(tree,newTree,map);
+    
+    return newTree;
+}
+
+int main()
+{
+   struct node *tree = newnode(1);
+   tree -> left = newnode(2);
+   tree -> right = newnode(3);
+   tree -> left -> left = newnode(4);
+   tree -> left -> right = newnode(5);
+   tree -> random = tree -> left -> right;
+   tree -> left -> left -> random = tree;
+   tree -> left -> right -> random = tree -> right;
+   
+   inorder(tree);
+   
+   printf("\n");
+   
+   struct node *clone = cloneTree(tree);
+   inorder(clone);
+   
+    return 0;
+}
+
